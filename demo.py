@@ -22,6 +22,7 @@ from glob import glob
 from pathlib import Path
 
 import cv2
+import yaml
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
@@ -59,6 +60,14 @@ def process(args, app, image_size=224, draw_bbox=False):
             _, ext = os.path.splitext(file.lower())
             if ext not in {'.jpg', '.jpeg', '.png'}:
                 continue
+            actor_name = os.path.basename(root)
+            with open(os.path.join(root, 'config.yaml'), 'w') as f:
+               yaml.dump({'actor': root,
+                          'save_folder': args.i,
+                          'optimize_shape': True,
+                          'optimize_jaw': True,
+                          'begin_frames': 1,
+                          'keyframes': [ 0, 1 ]}, f)     
             image_paths.append(os.path.join(root, file))
     for image_path in tqdm(image_paths):
         name = Path(image_path).stem
