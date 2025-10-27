@@ -52,7 +52,14 @@ def process(args, app, image_size=224, draw_bbox=False):
     dst = Path(args.a)
     dst.mkdir(parents=True, exist_ok=True)
     processes = []
-    image_paths = sorted(glob(args.i + '/*.*'))
+    image_paths = []
+    # image_paths = sorted(glob(args.i + '/*.*'))
+    for root, dirs, files in os.walk(args.i):
+        for file in files:
+            _, ext = os.path.splitext(file.lower())
+            if ext not in {'.jpg', '.jpeg', '.png'}:
+                continue
+            image_paths.append(os.path.join(root, file))
     for image_path in tqdm(image_paths):
         name = Path(image_path).stem
         img = cv2.imread(image_path)
