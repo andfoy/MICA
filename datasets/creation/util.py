@@ -92,7 +92,7 @@ def dist(p1, p2):
 def get_center(bboxes, img):
     img_center = img.shape[1] // 2, img.shape[0] // 2
     size = bboxes.shape[0]
-    distance = np.Inf
+    distance = np.inf
     j = 0
     for i in range(size):
         x1, y1, x2, y2 = bboxes[i, 0:4]
